@@ -9,11 +9,20 @@ import userRouter from "./routes/user.route.js"
 import interviewRouter from "./routes/interview.route.js"
 import paymentRouter from "./routes/payment.route.js"
 
-const app = express()
+const allowedOrigins = ["https://interview-iq-ai-st9m.vercel.app"],
+
+
 app.use(cors({
-    origin:"https://interviewiq-ai.onrender.com",
-    credentials:true
-}))
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.includes(origin)){
+      return callback(null, true);
+    } else {
+      return callback(new Error("CORS not allowed"));
+    }
+  },
+  credentials: true
+}));
 
 app.use(express.json())
 app.use(cookieParser())
